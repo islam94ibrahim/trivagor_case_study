@@ -12,4 +12,12 @@ class Location extends Model
      * @var array
      */
     protected $guarded = [];
+
+    /**
+     * Get the items for the location.
+     */
+    public function items()
+    {
+        return $this->hasMany('App\Item');
+    }
 }

@@ -28,3 +28,16 @@ $factory->define(App\Location::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\Item::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name,
+        'rating' => $faker->numberBetween(0, 5),
+        'category' => $faker->randomElement(['hotel', 'alternative', 'hostel', 'lodge', 'resort', 'guest-house']),
+        'location_id' => factory(App\Location::class)->create()->id,
+        'user_id' => factory(App\User::class)->create()->id,
+        'image' => $faker->url,
+        'reputation' => $faker->numberBetween(0, 1000),
+        'price' => $faker->randomNumber(3),
+        'availability' => $faker->randomNumber(1)
+    ];
+});

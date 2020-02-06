@@ -17,6 +17,15 @@ $router->get('/', function () use ($router) {
 
 $router->post('/users', 'UserController@create');
 
+$router->group(['prefix' => 'items', 'middleware' => 'auth'], function () use ($router) {
+    $router->get('/', 'ItemsController@index');
+    $router->post('/', 'ItemsController@store');
+    $router->get('{item}', 'ItemsController@show');
+    $router->patch('{item}', 'ItemsController@update');
+    $router->delete('{item}', 'ItemsController@destroy');
+    $router->post('{item}/book', 'ItemsController@book');
+});
+
 $router->group(['prefix' => 'locations', 'middleware' => 'auth'], function () use ($router) {
     $router->get('/', 'LocationsController@index');
     $router->post('/', 'LocationsController@store');
