@@ -165,4 +165,24 @@ class LocationApiTest extends TestCase
             ->seeJson(['title' => 'Location not found.'])
             ->assertResponseStatus(404);
     }
+
+    /** @test */
+    public function it_throws_permission_error_if_deleting_location_with_items_not_belonging_to_logged_user()
+    {
+        $loggedUser = factory(\App\User::class)->create();
+
+        $otherUser = factory(\App\User::class)->create();
+
+        $location = factory(\App\Location::class)->create();
+
+        factory(\App\Item::class)->create([
+            'user_id' => $otherUser->id,
+            'location_id' => $location->id
+        ]);
+
+        $this->actingAs($loggedUser)
+            ->json('delete', '/locations/' . $location->id)
+            ->seeJson(['title' => 'Permission error.'])
+            ->assertResponseStatus(401);
+    }
 }

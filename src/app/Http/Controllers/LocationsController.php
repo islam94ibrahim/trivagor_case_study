@@ -91,6 +91,16 @@ class LocationsController extends BaseController
             return $location;
         }
 
+        foreach ($location->items()->get() as $item) {
+            if ($item->user_id !== Auth::user()->id) {
+                $error = new ApiProblem('Permission error.');
+                $error->setDetail('You cannot delete a location that have items that does not belong to you.');
+
+                return response($error->asJson(), 401)
+                    ->header('Content-Type', 'application/problem+json');
+            }
+        }
+
         $location->delete();
 
         return response()->json(['Location deleted successfully']);
