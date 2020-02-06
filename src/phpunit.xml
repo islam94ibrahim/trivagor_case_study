@@ -25,4 +25,9 @@
         <env name="CACHE_DRIVER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
     </php>
+    <logging>
+        <log type="coverage-html" target="./report" charset="UTF-8"
+             yui="true" highlight="true"
+             lowUpperBound="50" highLowerBound="80" />
+    </logging>
 </phpunit>

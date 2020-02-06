@@ -13,6 +13,7 @@
 
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
-        'name' => $faker->name
+        'username' => $faker->name,
+        'api_token' =>  Illuminate\Support\Str::random(80)
     ];
 });
