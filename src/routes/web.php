@@ -16,3 +16,11 @@ $router->get('/', function () use ($router) {
 });
 
 $router->post('/users', 'UserController@create');
+
+$router->group(['prefix' => 'locations', 'middleware' => 'auth'], function () use ($router) {
+    $router->get('/', 'LocationsController@index');
+    $router->post('/', 'LocationsController@store');
+    $router->get('{location}', 'LocationsController@show');
+    $router->patch('{location}', 'LocationsController@update');
+    $router->delete('{location}', 'LocationsController@destroy');
+});

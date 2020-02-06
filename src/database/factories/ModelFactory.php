@@ -17,3 +17,14 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'api_token' =>  Illuminate\Support\Str::random(80)
     ];
 });
+
+$factory->define(App\Location::class, function (Faker\Generator $faker) {
+    return [
+        'city' => $faker->city,
+        'state' => $faker->state,
+        'country' => $faker->country,
+        'zip_code' => $faker->postcode,
+        'address' => $faker->address
+    ];
+});
+
