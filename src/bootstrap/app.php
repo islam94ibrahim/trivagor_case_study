@@ -57,10 +57,6 @@ $app->singleton(
 |
 */
 
-// $app->middleware([
-//     App\Http\Middleware\ExampleMiddleware::class
-// ]);
-
  $app->routeMiddleware([
      'auth' => App\Http\Middleware\Authenticate::class,
  ]);
@@ -79,8 +75,6 @@ $app->singleton(
  $app->register(App\Providers\AppServiceProvider::class);
  $app->register(App\Providers\AuthServiceProvider::class);
  $app->register(Spatie\QueryBuilder\QueryBuilderServiceProvider::class);
- );
-// $app->register(App\Providers\EventServiceProvider::class);
 
  $app->configure('query-builder');
 
