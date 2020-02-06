@@ -47,6 +47,36 @@ class ItemApiTest extends TestCase
     }
 
     /** @test */
+    public function it_filters_an_item_by_location_city()
+    {
+        $user = factory(\App\User::class)->create();
+
+        $locationPrague = factory(\App\Location::class)->create([
+            'city' => 'Prague'
+        ]);
+
+        $locationBerlin = factory(\App\Location::class)->create([
+            'city' => 'Berlin'
+        ]);
+
+        $itemInPrague = factory(\App\Item::class)->create([
+            'location_id' => $locationPrague->id,
+            'user_id' => $user->id
+        ]);
+
+        $itemInBerlin = factory(\App\Item::class)->create([
+            'location_id' => $locationBerlin->id,
+            'user_id' => $user->id
+        ]);
+
+        $this->actingAs($user)
+            ->json('get', '/items?filter[city]=prague')
+            ->seeJson(['id' => $itemInPrague->id])
+            ->dontSeeJson(['id' => $itemInBerlin->id])
+            ->assertResponseStatus(200);
+    }
+
+    /** @test */
     public function it_throws_an_error_when_item_is_not_found()
     {
         $user = factory(\App\User::class)->create();

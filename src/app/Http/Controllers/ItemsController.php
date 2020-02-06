@@ -23,7 +23,19 @@ class ItemsController extends BaseController
      */
     public function index(Request $request)
     {
-        return response()->json(Item::all());
+        $items = QueryBuilder::for(Item::class, $request)
+            ->owned(Auth::user()->id)
+            ->allowedFilters([
+                'reputation_badge',
+                'category',
+                'rating',
+                AllowedFilter::custom('city', new ItemLocationCityFilter),
+                AllowedFilter::scope('min_availability'),
+                AllowedFilter::scope('max_availability')
+            ])
+            ->get();
+
+        return response()->json($items);
     }
 
     /**
