@@ -1,0 +1,563 @@
+openapi: 3.0.0
+servers:
+  - url: http://localhost:8080/
+info:
+  description: Trivage Hotel Api Case Study
+  version: "1.0.0"
+  title: Trivago Hotel Api
+  contact:
+    email: islam94.ibrahim@gmail.com
+  license:
+    name: MIT
+    url: 'https://opensource.org/licenses/MIT'
+tags:
+  - name: users
+    description: users endpoint to generate tokens
+  - name: locations
+    description: Accommodation locations
+  - name: location
+    description: Accommodation location
+  - name: items
+    description: Accommodation Items
+  - name: item
+    description: Accommodation Item
+  - name: book
+    description: Accommodation Item book
+paths:
+  /users:
+    post:
+      tags:
+        - users
+      summary: create a user
+      operationId: createUser
+      description: Creates a user
+      responses:
+        '200':
+          description: user created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResults'
+        '422':
+          description: 'invalid input'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInputs'
+        description: User inputs to add
+  /locations:
+    get:
+      tags:
+        - locations
+      summary: get all locatinos
+      operationId: getLocatinos
+      description: |
+        By passing in the appropriate headers, you can get all locatinos
+      parameters:
+        - in: header
+          name: Authorization
+          description: Bearer token
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: results of all locations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LocationResults'
+        '401':
+          description: Unauthorized
+    post:
+      tags:
+        - locations
+      summary: create a location
+      operationId: createLocation
+      description: Creates a location
+      responses:
+        '200':
+          description: location created
+        '401':
+          description: Unauthorized
+        '422':
+          description: 'invalid input'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LocationInputs'
+        description: location inputs to add
+  /locations/{id}:
+    get:
+      tags:
+        - location
+      summary: get a location
+      operationId: getLocation
+      description: |
+        By passing in the appropriate headers, you can get the requested location
+      parameters:
+        - in: header
+          name: Authorization
+          description: Bearer token
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the location to get
+      responses:
+        '200':
+          description: results of the location
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LocationResults'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+    patch:
+      tags:
+        - location
+      summary: update a location
+      operationId: updateLocation
+      description: Update a location in the system
+      parameters:
+        - in: header
+          name: Authorization
+          description: Bearer token
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the location to update
+      responses:
+        '200':
+          description: location updated
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '422':
+          description: 'invalid inputs'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LocationInputs'
+        description: location inputs to add
+    delete:
+      tags:
+        - location
+      summary: delete a location
+      operationId: deleteLocation
+      description: Delete a location in the system
+      parameters:
+        - in: header
+          name: Authorization
+          description: Bearer token
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the location to delete
+      responses:
+        '200':
+          description: location deleted
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+  /items:
+    get:
+      tags:
+        - items
+      summary: get all items
+      operationId: getItems
+      description: |
+        By passing in the appropriate headers, you can get all items that was created by the current user
+      parameters:
+        - in: header
+          name: Authorization
+          description: Bearer token
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: filter[category]
+          description: filter items by name
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: filter[rating]
+          description: filter items by rating
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: filter[reputation_badge]
+          description: filter items by reputation badge
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: filter[city]
+          description: filter items by location city
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: filter[min_availability]
+          description: filter items by availability greater than or equal a number
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: filter[max_availability]
+          description: filter items by availability less than or equal a number
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: results of all items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ItemResults'
+        '401':
+          description: Unauthorized
+    post:
+      tags:
+        - items
+      summary: create an item
+      operationId: createItem
+      description: Creates an item
+      responses:
+        '200':
+          description: item created
+        '401':
+          description: Unauthorized
+        '422':
+          description: 'invalid input'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemInputs'
+        description: Item inputs to add
+  /items/{id}:
+    get:
+      tags:
+        - item
+      summary: get all item
+      operationId: getItem
+      description: |
+        By passing in the appropriate headers, you can get the requested item
+      parameters:
+        - in: header
+          name: Authorization
+          description: Bearer token
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the item to get
+      responses:
+        '200':
+          description: results of the item
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ItemResults'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+    patch:
+      tags:
+        - item
+      summary: update an item
+      operationId: updateItem
+      description: Update an Item in the system
+      parameters:
+        - in: header
+          name: Authorization
+          description: Bearer token
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the Item to update
+      responses:
+        '200':
+          description: Item updated
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '422':
+          description: 'invalid inputs'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemInputs'
+        description: Item inputs to add
+    delete:
+      tags:
+        - item
+      summary: delete an item
+      operationId: deleteItem
+      description: Delete an item in the system
+      parameters:
+        - in: header
+          name: Authorization
+          description: Bearer token
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the item to delete
+      responses:
+        '200':
+          description: Item deleted
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+  /items/{id}/book:
+    post:
+      tags:
+        - book
+      summary: book an item
+      operationId: bookItem
+      description: Book an item to the system
+      parameters:
+        - in: header
+          name: Authorization
+          description: Bearer token
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the item to delete
+      responses:
+        '200':
+          description: item created
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemInputs'
+        description: Item inputs to add
+components:
+  schemas:
+    UserInputs:
+      type: object
+      required:
+        - username
+      properties:
+        username:
+          type: string
+          example: Hotiler Shiraton
+    UserResults:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        username:
+          type: string
+          example: Hotelier Sheraton
+        api_token:
+          type: string
+          example: nJfriZMsFIuyzM7nLS3KhXgxMfQdsv1zWTRGpZ6ZVy9i0Sfg6aj7UTip0PvUBZlitsB2Za886HqO8l1N
+        created_at:
+          type: string
+          example: "2020-02-06 00:11:00"
+        updated_at:
+          type: string
+          example: "2020-02-06 00:11:00"
+    LocationResults:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        city:
+          type: string
+          example: Prague
+        state:
+          type: string
+          example: Praha 4
+        country:
+          type: string
+          example: Czech
+        zip_code:
+          type: integer
+          example: 18000
+        address:
+          type: string
+          example: Hlavni nadrazi 1113/21
+        created_at:
+          type: string
+          example: "2020-02-06 00:11:00"
+        updated_at:
+          type: string
+          example: "2020-02-06 00:11:00"
+    LocationInputs:
+      type: object
+      required:
+        - city
+        - state
+        - country
+        - zip_code
+        - address
+      properties:
+        city:
+          type: string
+          example: Prague
+        state:
+          type: string
+          example: Praha
+        country:
+          type: string
+          example: Czech
+        zip_code:
+          type: number
+          example: 18000
+        address:
+          type: string
+          example: Hlavni nadrazi 115/21
+        created_at:
+          type: string
+          example: "2020-02-06 00:11:00"
+        updated_at:
+          type: string
+          example: "2020-02-06 00:11:00"
+    ItemResults:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        location_id:
+          type: integer
+          example: 2
+        name:
+          type: string
+          example: Sheraton Hotel
+        rating:
+          type: integer
+          example: 5
+        category:
+          type: string
+          example: Hotel
+        image:
+          type: string
+          example: http://image-url.com
+        reputation:
+          type: integer
+          example: 500
+        reputationBadge:
+          type: string
+          example: red
+        price:
+          type: integer
+          example: 1000
+        availability:
+          type: integer
+          example: 5
+        created_at:
+          type: string
+          example: "2020-02-06 00:11:00"
+        updated_at:
+          type: string
+          example: "2020-02-06 00:11:00"
+    ItemInputs:
+      type: object
+      required:
+        - location_id
+        - name
+        - rating
+        - category
+        - image
+        - reputation
+        - price
+        - availability
+      properties:
+        location_id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Sheraton Hotel
+        rating:
+          type: integer
+          example: 5
+        category:
+          type: string
+          example: hotel
+        image:
+          type: string
+          example: http://image-url.com
+        reputation:
+          type: integer
+          example: 500
+        price:
+          type: integer
+          example: 1000
+        availability:
+          type: integer
+          example: 5
+        created_at:
+          type: string
+          example: "2020-02-06 00:11:00"
+        updated_at:
+          type: string
+          example: "2020-02-06 00:11:00"

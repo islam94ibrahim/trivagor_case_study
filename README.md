@@ -19,3 +19,7 @@
 - Run `phpunit` inside `src` directory to run the tests
 - Code coverage can be found under `report/index.html`
 - Code coverage reached is +97% based on the Test driven development approach
+
+## API Documentation
+- `src/openapi.yaml` file can found that document the API based on swagger open source, please refere to it for
+available endpoints and required parameters/data/headers
