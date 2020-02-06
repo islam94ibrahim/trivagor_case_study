@@ -1,7 +1,9 @@
 # Trivago Case Study
 
+## Requirements
+- Docker
+
 ## Installation
-- Make sure you have Docker installed on your system
 - Copy `.env.example` and rename it to `.env` file inside `/src` directory
 - Run `docker-compose build && docker-compose up -d` to build the docker environment
 - Run `docker-compose exec php composer install` inside `/src` directory
@@ -23,3 +25,6 @@
 ## API Documentation
 - `src/openapi.yaml` file can found that document the API based on swagger open source, please refere to it for
 available endpoints and required parameters/data/headers
+
+## Git Repository
+- If you want to see commit history in the repository, click [here](https://github.com/islam94ibrahim/trivagor_case_study)
